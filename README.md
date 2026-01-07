@@ -1,0 +1,24 @@
+# Compiled class files
+*.class
+*.jar
+*.war
+
+# IDE files
+/.vscode/
+/.idea/
+/*.iml
+
+# Build directories
+/bin/
+/out/
+/target/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Database credentials (optional, if you don't want to push real passwords)
+resources/db.properties
