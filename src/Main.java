@@ -1,12 +1,17 @@
+import java.util.List;
+
+import dao.CourseDAO;
+import model.Course;
 import utils.DBConnection;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            DBConnection.getConnection();
-            System.out.println("Connected using db.properties!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+    CourseDAO cdao = new CourseDAO();
+    Course c = cdao.getCourseByCode("BICS2301");
+    System.out.println(c.getName());
+
+    List<Course> all = cdao.getAllCourses();
+    all.forEach(course -> System.out.println(course.getName()));
     }
 }
