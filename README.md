@@ -12,15 +12,15 @@ Create a new empty folder named PreRegistration
  install these installer:
  1. https://dev.mysql.com/downloads/file/?id=546178
  2. https://dev.mysql.com/downloads/file/?id=546163
- ![MySQLCommunity](images/MySQLCommunity)
+ ![MySQLCommunity](images/MySQLCommunity.png)
 
 # Step 3
  1. Run the mysql-installer-web-community-8.0.44.0 installer
  2. Proceed with the installation (Choose Custom Setup Type)
  3. Choose MySQL Server 8.0.43 - x64 and click the green arrow
- ![Installer](images/Installer1)
+ ![Installer](images/Installer1.png)
  4. Choose MySQL Workbench 8.0.44 and click the green arrow
- ![Installer](images/Installer2)
+ ![Installer](images/Installer2.png)
  5. Click Next
  6. Execute
  7. Click Next Again
@@ -35,7 +35,7 @@ Create a new empty folder named PreRegistration
 # Step 4
  1. Click the (+) icon in My connection
  2. Set it up exactly like this
- ![Workbench](Connection.png)
+ ![Workbench](images/Connection.png)
  3. Click Test Connection
  4. Click Okay once Test Connection is fine
  5. Open the Connection
@@ -62,7 +62,7 @@ db.driver=com.mysql.cj.jdbc.Driver
 # Step 6
  1. Go to JAVA PROJECTS
  2. Click Refrenced Library (+) plus icon
-![VSCODE](Refrence.png)
+![VSCODE](images/Refrence.png)
  3. Go to MySQL Connector
  4. Choose the JAR Field (mysql-connector-j-9.5.0)
 
