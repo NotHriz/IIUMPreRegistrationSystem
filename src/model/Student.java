@@ -12,7 +12,7 @@ public class Student {
     private String password;
 
     public Student(int studentId, String matric, String name, String email,
-                   int currentSem, int studyLevel, int totalChr, int currentChr, String password) {
+                   int currentSem, int studyLevel, int totalChr, String password) {
         this.studentId = studentId;
         this.matric = matric;
         this.name = name;
@@ -20,7 +20,6 @@ public class Student {
         this.currentSem = currentSem;
         this.studyLevel = studyLevel;
         this.totalChr = totalChr;
-        this.currentChr = currentChr;
         this.password = password;
     }
 
@@ -34,4 +33,19 @@ public class Student {
     public int getTotalChr() { return totalChr; }
     public int getCurrentChr() { return currentChr; }
     public String getPassword() { return password; }
+
+    // toString method for easy printing
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentId=" + studentId +
+                ", matric='" + matric + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", currentSem=" + currentSem +
+                ", studyLevel=" + studyLevel +
+                ", totalChr=" + totalChr +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

@@ -12,9 +12,9 @@ public class StudentDAO {
 
     // Get student info by matric number
     public Student getStudentByMatric(String matric) {
-        String sql = "SELECT * FROM students WHERE matric_number = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT * FROM students WHERE matric_no = ?";
+        Connection conn = DBConnection.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, matric);
             ResultSet rs = ps.executeQuery();
@@ -22,13 +22,12 @@ public class StudentDAO {
             if (rs.next()) {
                 return new Student(
                         rs.getInt("student_id"),
-                        rs.getString("matric_number"),
+                        rs.getString("matric_no"),
                         rs.getString("name"),
                         rs.getString("email"),
-                        rs.getInt("current_sem"),
-                        rs.getInt("study_level"),
-                        rs.getInt("total_chr"),
-                        rs.getInt("current_chr"),
+                        rs.getInt("current_semester"),
+                        rs.getInt("level_of_study"),
+                        rs.getInt("total_credits"),
                         rs.getString("password")
                 );
             }
@@ -42,8 +41,8 @@ public class StudentDAO {
     // Check login
     public boolean login(String matric, String password) {
         String sql = "SELECT * FROM students WHERE matric_number = ? AND password = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = DBConnection.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, matric);
             ps.setString(2, password);

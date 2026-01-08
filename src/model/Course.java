@@ -1,34 +1,31 @@
 package model;
 
 public class Course {
-    private int courseId;
-    private String code;
-    private String name;
-    private int creditHour;
-    private String day;
-    private String time;
-    private String venue;
-    private String lecturer;
+    private String courseCode, course_name, prerequisite_course_code;
+    private int credit_hour;
 
-    public Course(int courseId, String code, String name, int creditHour,
-                  String day, String time, String venue, String lecturer) {
-        this.courseId = courseId;
-        this.code = code;
-        this.name = name;
-        this.creditHour = creditHour;
-        this.day = day;
-        this.time = time;
-        this.venue = venue;
-        this.lecturer = lecturer;
+    // Constructor
+    public Course(String courseCode, String course_name, int credit_hour, String prerequisite_course_code) {
+        this.courseCode = courseCode;
+        this.course_name = course_name;
+        this.credit_hour = credit_hour;
+        this.prerequisite_course_code = prerequisite_course_code;
     }
 
     // Getters
-    public int getCourseId() { return courseId; }
-    public String getCode() { return code; }
-    public String getName() { return name; }
-    public int getCreditHour() { return creditHour; }
-    public String getDay() { return day; }
-    public String getTime() { return time; }
-    public String getVenue() { return venue; }
-    public String getLecturer() { return lecturer; }
+    public String getCourseCode() { return courseCode; }
+    public String getCourse_name() { return course_name; }
+    public int getCredit_hour() { return credit_hour; }
+    public String getPrerequisite_course_code() { return prerequisite_course_code; }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseCode='" + courseCode + '\'' +
+                ", course_name='" + course_name + '\'' +
+                ", credit_hour=" + credit_hour +
+                ", prerequisite_course_code='" + prerequisite_course_code + '\'' +
+                '}';
+    }
 }
