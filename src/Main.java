@@ -1,5 +1,12 @@
+import utils.DBConnection;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Welcome to the School Management System");
+        try {
+            DBConnection.getConnection();
+            System.out.println("Connected using db.properties!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
