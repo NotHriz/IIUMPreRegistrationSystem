@@ -28,4 +28,16 @@ public class Course {
                 ", prerequisite_course_code='" + prerequisite_course_code + '\'' +
                 '}';
     }
+
+
+    // Getters
+    public String getPrerequisite() {
+        return prerequisite_course_code;
+    }
+    public int getCreditHour() {
+        return credit_hour;
+    }
+    public String getName() {
+        return course_name;
+    }
 }
