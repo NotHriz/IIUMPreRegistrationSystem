@@ -71,14 +71,14 @@ db.driver=com.mysql.cj.jdbc.Driver
 
 
 # Error Codes Guide
-500 : Database error
-101 : Course not found
-102 : Prerequisite not met
-103 : Course already preregistered
-104 : Exceeds maximum credit hours
-105 : Section capacity full
-106 : Schedule conflict
-0   : Success
+ 1. 500 : Database error             
+ 2. 101 : Course not found        
+ 3. 102 : Prerequisite not met      
+ 4. 103 : Course already preregistered   
+ 5. 104 : Exceeds maximum credit hours 
+ 6. 105 : Section capacity full
+ 7. 106 : Schedule conflict
+ 8. 0   : Success                   
 
  
 
