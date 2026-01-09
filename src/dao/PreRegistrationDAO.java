@@ -1,11 +1,18 @@
 package dao;
 
-import utils.DBConnection;
-import model.PreRegistration;
+// Java Standard Library - SQL
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import java.sql.*;
+// Java Standard Library - Collections
 import java.util.ArrayList;
 import java.util.List;
+
+// Internal Layers
+import model.PreRegistration;
+import utils.DBConnection;
 
 public class PreRegistrationDAO {
 

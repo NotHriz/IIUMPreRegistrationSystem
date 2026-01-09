@@ -1,11 +1,19 @@
 package dao;
 
-import utils.DBConnection;
-import model.Course;
+// Java Standard Library - SQL
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import java.sql.*;
+// Java Standard Library - Collections
 import java.util.ArrayList;
 import java.util.List;
+
+// Internal Layers
+import model.Course;
+import utils.DBConnection;
 
 public class CourseDAO {
 

@@ -1,9 +1,12 @@
 package utils;
 
-import java.io.InputStream;
+// Java Standard Library - SQL
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+// Java Standard Library - IO & Utils
+import java.io.InputStream;
 import java.util.Properties;
 
 public class DBConnection {
