@@ -21,4 +21,4 @@ Thumbs.db
 *.log
 
 # Database credentials (optional, if you don't want to push real passwords)
-resources/db.properties
+db.properties

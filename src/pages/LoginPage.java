@@ -15,6 +15,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import pages.PreRegistrationPage;
 
+@SuppressWarnings("unused")
 public class LoginPage extends Application {
 
     private static final double NORMAL_WIDTH = 350;
@@ -68,12 +69,16 @@ public class LoginPage extends Application {
         Button loginButton = new Button("Login");
         loginButton.setPrefWidth(120);
         loginButton.setTextFill(Color.WHITE);
-        loginButton.setBackground(new Background(
-                new BackgroundFill(Color.DEEPSKYBLUE, new CornerRadii(10), Insets.EMPTY)
-        ));
+        loginButton.setStyle("-fx-background-color: rgba(0, 80, 255, 1);");
         grid.add(loginButton, 1, 4);
 
-         loginButton.setOnAction(e -> {
+        loginButton.setOnMouseEntered(e -> 
+            loginButton.setStyle("-fx-background-color: rgba(63, 135, 243, 1);")
+        );
+        loginButton.setOnMouseExited(e -> 
+            loginButton.setStyle("-fx-background-color: rgba(0, 80, 255, 1);")
+        );
+        loginButton.setOnAction(e -> {
 
             String matric = matricField.getText().trim();
             String password = passwordField.getText().trim();
@@ -92,8 +97,27 @@ public class LoginPage extends Application {
                 // ERROR ALERT
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Login Failed");
-                alert.setHeaderText("Invalid Credentials");
-                alert.setContentText("Matric number or password is incorrect.");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid matric number or password.");
+
+                // Style dialog pane
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.setStyle(
+                    "-fx-background-color: white;"
+                );
+
+                // Style OK button
+                Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
+                okButton.setStyle(
+                    "-fx-background-color: #dc3545;" +   // red
+                    "-fx-text-fill: white;" +
+                    "-fx-font-weight: bold;" +
+                    "-fx-cursor: hand;"
+                );
+
+                // Optional: rounded corners
+                dialogPane.lookup(".button-bar").setStyle("-fx-background-color: white;");
+
                 alert.showAndWait();
             }
         });
