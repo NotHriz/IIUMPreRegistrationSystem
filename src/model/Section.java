@@ -1,16 +1,17 @@
 package model;
 
 public class Section {
-    private int section_id;
+    private int section_id, curr_capacity;
     private String course_code, section_code, lecturer_name, schedule, venue;
 
     // Constructor
     public Section(int section_id, String course_code, String section_code,
-                   String lecturer_name, String schedule, String venue) {
+                   String lecturer_name, int curr_capacity, String schedule, String venue) {
         this.section_id = section_id;
         this.course_code = course_code;
         this.section_code = section_code;
         this.lecturer_name = lecturer_name;
+        this.curr_capacity = curr_capacity;
         this.schedule = schedule;
         this.venue = venue;
     }
@@ -34,6 +35,9 @@ public class Section {
     public String getVenue() {
         return venue;
     }
+    public int getCurrCapacity() {
+        return curr_capacity;
+    }
     
     // toString method for easy printing
     @Override
@@ -43,6 +47,7 @@ public class Section {
                 ", course_code='" + course_code + '\'' +
                 ", section_code='" + section_code + '\'' +
                 ", lecturer_name='" + lecturer_name + '\'' +
+                ", curr_capacity=" + curr_capacity +
                 ", schedule='" + schedule + '\'' +
                 ", venue='" + venue + '\'' +
                 '}';

@@ -9,9 +9,21 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+/*
+## Error Codes to return:
+500 : Database error
+101 : Course not found
+102 : Prerequisite not met
+103 : Course already preregistered
+104 : Exceeds maximum credit hours
+105 : Section capacity full
+106 : Schedule conflict
+0   : Success
+*/
+
 public class RegistrationService {
 
-    public boolean addCourse(int studentId, int sectionId, String courseCode, int semester, int year) {
+    public int addCourse(int studentId, int sectionId, String courseCode, int semester, int year) {
 
         CourseDAO courseDAO = new CourseDAO();
         PreRegistrationDAO preDAO = new PreRegistrationDAO();
@@ -20,7 +32,7 @@ public class RegistrationService {
         Course course = courseDAO.getCourseByCode(courseCode);
         if (course == null) {
             System.out.println("Course not found.");
-            return false;
+            return 101;
         }
 
         // Check prerequisite
@@ -31,22 +43,44 @@ public class RegistrationService {
 
             if (!completedCourses.contains(prereqCode)) {
                 System.out.println("Prerequisite not met: " + prereqCode);
-                return false;
+                return 102;
             }
         }
 
         // Prevent duplicate preregistration
         if (preDAO.isAlreadyRegistered(studentId, courseCode, semester, year)) {
             System.out.println("Course already preregistered.");
-            return false;
+            return 103;
         }
 
         // Check max credit hours (20)
         int currentCredits = preDAO.getTotalRegisteredCredits(studentId, semester, year);
         if (currentCredits + course.getCreditHour() > 20) {
             System.out.println("Exceeds maximum credit hours (20).");
-            return false;
+            return 104;
         }
+
+        // TODO:Check section capacity (x/30)
+        SectionDAO sectionDAO = new SectionDAO();
+        int capacity = sectionDAO.getSectionCapacity(sectionId);
+        if (capacity >= 30) {
+            System.out.println("Section capacity full.");
+            return 105;
+        }
+
+        // TODO:Check schedule conflicts (just check time(String) overlaps)
+        // Get all subject student is registered in
+        List<PreRegistration> registeredSections = preDAO.getPreRegistrationsByStudent(studentId);
+        // Compare them one by one
+        for (PreRegistration p : registeredSections) {
+            Section sec = sectionDAO.getSectionId(p.getSectionId());
+            if (sec != null && sec.getSchedule().equals(
+                    sectionDAO.getSectionId(sectionId).getSchedule())) {
+                System.out.println("Schedule conflict with section ID: " + p.getSectionId());
+                return 106;
+            }
+        }
+                
 
         // Insert preregistration
         String sql = """
@@ -66,11 +100,11 @@ public class RegistrationService {
 
             ps.executeUpdate();
             System.out.println("Course preregistered successfully.");
-            return true;
+            return 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return 500;
         }
     }
 }
