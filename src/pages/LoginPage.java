@@ -78,9 +78,6 @@ public class LoginPage extends Application {
             String matric = matricField.getText().trim();
             String password = passwordField.getText().trim();
 
-            AuthService authService = new AuthService();
-
-
             // Initialize AuthService
             AuthService authService = new AuthService();
 
