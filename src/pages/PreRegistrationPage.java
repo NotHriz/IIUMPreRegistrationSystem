@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public class PreRegistrationPage extends Application {
 
     LoginPage loginPage = new LoginPage();
@@ -283,7 +284,7 @@ public class PreRegistrationPage extends Application {
 
         TableView<SectionModel> table = new TableView<>();
         table.getStyleClass().add("popup-table"); // (FIX #6)
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
         
         // Define Columns
         TableColumn<SectionModel, String> colCourse = new TableColumn<>("Course");

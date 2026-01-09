@@ -21,7 +21,11 @@ public class LoginPage extends Application {
     private static final double NORMAL_HEIGHT = 280;
     private static final double MAX_WIDTH = 400;
     private static final double MAX_HEIGHT = 540;
-    
+
+    // TEMPORARY HARDCODED CREDENTIALS
+    private static final String VALID_MATRIC = "2410000";
+    private static final String VALID_PASSWORD = "root123";
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("University Pre-Registration Login");
@@ -69,6 +73,31 @@ public class LoginPage extends Application {
         ));
         grid.add(loginButton, 1, 4);
 
+         loginButton.setOnAction(e -> {
+
+            String matric = matricField.getText().trim();
+            String password = passwordField.getText().trim();
+
+            if (matric.equals(VALID_MATRIC) && password.equals(VALID_PASSWORD)) {
+
+                // SUCCESS → OPEN PRE-REGISTRATION PAGE
+                try {
+                    Stage stage = (Stage) loginButton.getScene().getWindow();
+                    new PreRegistrationPage().start(stage);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            } else {
+                // ERROR ALERT
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Login Failed");
+                alert.setHeaderText("Invalid Credentials");
+                alert.setContentText("Matric number or password is incorrect.");
+                alert.showAndWait();
+            }
+        });
+        
         // Column constraints
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setHalignment(HPos.RIGHT);
@@ -141,6 +170,7 @@ public class LoginPage extends Application {
 	public void show() {
 		launch();
 	}
-
 }
+
+
 
