@@ -25,8 +25,6 @@ public class StudentDAO {
                         rs.getString("matric_no"),
                         rs.getString("name"),
                         rs.getString("email"),
-                        rs.getInt("current_semester"),
-                        rs.getInt("level_of_study"),
                         rs.getInt("total_credits"),
                         rs.getString("password")
                 );
@@ -98,5 +96,24 @@ public class StudentDAO {
         }
 
         return current;
+    }
+
+    // Get student ID by matric number
+    public int getStudentIdByMatric(String matric) {
+        String sql = "SELECT student_id FROM students WHERE matric_no = ?";
+        Connection conn = DBConnection.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, matric);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("student_id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Not found
     }
 }

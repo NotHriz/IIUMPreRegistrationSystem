@@ -1,5 +1,6 @@
 package pages;
 
+import dao.StudentDAO;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -15,6 +16,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import pages.PreRegistrationPage;
 
+import services.AuthService;
 import services.*;
 
 public class LoginPage extends Application {
@@ -76,6 +78,9 @@ public class LoginPage extends Application {
             String matric = matricField.getText().trim();
             String password = passwordField.getText().trim();
 
+            AuthService authService = new AuthService();
+
+
             // Initialize AuthService
             AuthService authService = new AuthService();
 
@@ -84,6 +89,9 @@ public class LoginPage extends Application {
                 // SUCCESS → OPEN PRE-REGISTRATION PAGE
                 try {
                     Stage stage = (Stage) loginButton.getScene().getWindow();
+                    StudentDAO studentDAO = new StudentDAO();
+                    int studentId = studentDAO.getStudentIdByMatric(matric); // Get student ID from matric number
+                    PreRegistrationPage.studentId = studentId; // Give student ID to PreRegistrationPage
                     new PreRegistrationPage().start(stage);
                 } catch (Exception ex) {
                     ex.printStackTrace();

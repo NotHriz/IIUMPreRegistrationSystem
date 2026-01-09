@@ -8,14 +8,14 @@ import java.util.List;
 
 public class SectionDAO {
 
-    public List<Section> getSectionsByCourse(int courseId) {
+    public List<Section> getSectionsByCourse(String course_code) {
         List<Section> sections = new ArrayList<>();
-        String sql = "SELECT * FROM sections WHERE course_id = ?";
+        String sql = "SELECT * FROM sections WHERE course_code = ?";
 
         try {
             Connection conn = DBConnection.getConnection(); // don’t close
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, courseId);
+            ps.setString(1, course_code);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -94,5 +94,37 @@ public class SectionDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    // Get all section
+    public List<Section> getAllSections() {
+        List<Section> sections = new ArrayList<>();
+        String sql = "SELECT * FROM sections";
+
+        try {
+            Connection conn = DBConnection.getConnection();
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                sections.add(new Section(
+                        rs.getInt("section_id"),
+                        rs.getString("course_code"),
+                        rs.getString("section_code"),
+                        rs.getString("lecturer_name"),
+                        rs.getInt("curr_capacity"),
+                        rs.getString("schedule"),
+                        rs.getString("venue")
+                ));
+            }
+
+            rs.close();
+            st.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return sections;
     }
 }

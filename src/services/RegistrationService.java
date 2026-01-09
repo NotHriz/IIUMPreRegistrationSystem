@@ -23,7 +23,7 @@ import java.util.List;
 
 public class RegistrationService {
 
-    public int addCourse(int studentId, int sectionId, String courseCode, int semester, int year) {
+    public int addCourse(int studentId, int sectionId, String courseCode) {
 
         CourseDAO courseDAO = new CourseDAO();
         PreRegistrationDAO preDAO = new PreRegistrationDAO();
@@ -48,19 +48,19 @@ public class RegistrationService {
         }
 
         // Prevent duplicate preregistration
-        if (preDAO.isAlreadyRegistered(studentId, courseCode, semester, year)) {
+        if (preDAO.isAlreadyRegistered(studentId, courseCode)) {
             System.out.println("Course already preregistered.");
             return 103;
         }
 
         // Check max credit hours (20)
-        int currentCredits = preDAO.getTotalRegisteredCredits(studentId, semester, year);
+        int currentCredits = preDAO.getTotalRegisteredCredits(studentId);
         if (currentCredits + course.getCreditHour() > 20) {
             System.out.println("Exceeds maximum credit hours (20).");
             return 104;
         }
 
-        // TODO:Check section capacity (x/30)
+        // Check section capacity (x/30)
         SectionDAO sectionDAO = new SectionDAO();
         int capacity = sectionDAO.getSectionCapacity(sectionId);
         if (capacity >= 30) {
@@ -68,7 +68,7 @@ public class RegistrationService {
             return 105;
         }
 
-        // TODO:Check schedule conflicts (just check time(String) overlaps)
+        // Check schedule conflicts (just check time(String) overlaps)
         // Get all subject student is registered in
         List<PreRegistration> registeredSections = preDAO.getPreRegistrationsByStudent(studentId);
         // Compare them one by one
@@ -85,8 +85,8 @@ public class RegistrationService {
         // Insert preregistration
         String sql = """
             INSERT INTO preregistrations
-            (student_id, section_id, course_code, semester, year, status)
-            VALUES (?, ?, ?, ?, ?, 'Registered')
+            (student_id, section_id, course_code, status)
+            VALUES (?, ?, ?, 'Registered')
         """;
 
         try (Connection conn = DBConnection.getConnection();
@@ -95,8 +95,6 @@ public class RegistrationService {
             ps.setInt(1, studentId);
             ps.setInt(2, sectionId);
             ps.setString(3, courseCode);
-            ps.setInt(4, semester);
-            ps.setInt(5, year);
 
             ps.executeUpdate();
             System.out.println("Course preregistered successfully.");
