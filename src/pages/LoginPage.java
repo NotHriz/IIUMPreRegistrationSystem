@@ -1,25 +1,43 @@
 package pages;
 
-import dao.StudentDAO;
+// JavaFX Core & Stage
 import javafx.application.Application;
-import javafx.geometry.HPos;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+
+// JavaFX Layouts
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.ColumnConstraints;
+
+// JavaFX Controls
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+
+// JavaFX Geometry & Visuals
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.geometry.HPos;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
-import javafx.*;
-import pages.PreRegistrationPage;
-
+// Internal Layers
+import dao.StudentDAO;
 import services.AuthService;
-import services.*;
+
 
 public class LoginPage extends Application {
 

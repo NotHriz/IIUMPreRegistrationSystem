@@ -1,29 +1,17 @@
-
-import services.RegistrationService;
-import dao.PreRegistrationDAO;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import model.PreRegistration;
 import pages.LoginPage;
-import pages.PreRegistrationPage;
-
-import java.util.List;
-
-import utils.*;
+import utils.DBConnection;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        // Start DB connection
+        // 1. Warm up the database connection on startup
         DBConnection.getConnection();
 
+        // 2. Launch the application via the Login Page
         LoginPage loginPage = new LoginPage();
-        PreRegistrationPage preRegistrationPage = new PreRegistrationPage();
-
+        
+        // Since LoginPage extends Application, this calls launch()
         loginPage.show();
-
-    
     }
 }

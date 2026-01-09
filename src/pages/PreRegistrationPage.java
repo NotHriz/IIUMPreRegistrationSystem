@@ -1,31 +1,69 @@
 package pages;
+
+// JavaFX Core
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Modality;
+import javafx.scene.Scene;
+import javafx.scene.Cursor;
+
+// JavaFX UI Controls
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+
+// JavaFX Layouts
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.ColumnConstraints;
+
+// JavaFX Properties & Collections
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+// JavaFX Geometry & Visuals
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.scene.Cursor;
-import pages.LoginPage;
+
+// Java Utilities
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
-import dao.*;
-import services.*;
-import model.*;
+// Data Access Objects 
+import dao.CourseDAO;
+import dao.SectionDAO;
+import dao.PreRegistrationDAO;
+import dao.StudentDAO;
+
+// Services 
+import services.RegistrationService; 
+
+// Models 
+import model.Course;
+import model.Section;
+import model.PreRegistration;
+
+// Internal Pages
+import pages.LoginPage;
 
 @SuppressWarnings("unused")
 public class PreRegistrationPage extends Application {
