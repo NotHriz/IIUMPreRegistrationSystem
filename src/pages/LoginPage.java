@@ -15,16 +15,14 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import pages.PreRegistrationPage;
 
+import services.*;
+
 public class LoginPage extends Application {
 
     private static final double NORMAL_WIDTH = 350;
     private static final double NORMAL_HEIGHT = 280;
     private static final double MAX_WIDTH = 400;
     private static final double MAX_HEIGHT = 540;
-
-    // TEMPORARY HARDCODED CREDENTIALS
-    private static final String VALID_MATRIC = "2410000";
-    private static final String VALID_PASSWORD = "root123";
 
     @Override
     public void start(Stage primaryStage) {
@@ -78,7 +76,10 @@ public class LoginPage extends Application {
             String matric = matricField.getText().trim();
             String password = passwordField.getText().trim();
 
-            if (matric.equals(VALID_MATRIC) && password.equals(VALID_PASSWORD)) {
+            // Initialize AuthService
+            AuthService authService = new AuthService();
+
+            if (authService.authenticate(matric, password)) {
 
                 // SUCCESS → OPEN PRE-REGISTRATION PAGE
                 try {
