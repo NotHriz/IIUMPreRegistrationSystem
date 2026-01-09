@@ -24,6 +24,7 @@ public class SectionDAO {
                         rs.getString("course_code"),
                         rs.getString("section_code"),
                         rs.getString("lecturer_name"),
+                        rs.getInt("curr_capacity"),
                         rs.getString("schedule"),
                         rs.getString("venue")
                 ));
@@ -39,5 +40,59 @@ public class SectionDAO {
         return sections;
     }
 
-    // Optional: getSectionById(int sectionId)
+    // get section capacity
+    public int getSectionCapacity(int sectionId) {
+        String sql = "SELECT curr_capacity FROM sections WHERE section_id = ?";
+        int capacity = -1;
+
+        try {
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, sectionId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                capacity = rs.getInt("curr_capacity");
+            }
+
+            rs.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return capacity;
+    }
+
+    // Get section by ID
+    public Section getSectionId(int sectionId) {
+        String sql = "SELECT * FROM sections WHERE section_id = ?";
+
+        try {
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, sectionId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Section(
+                        rs.getInt("section_id"),
+                        rs.getString("course_code"),
+                        rs.getString("section_code"),
+                        rs.getString("lecturer_name"),
+                        rs.getInt("curr_capacity"),
+                        rs.getString("schedule"),
+                        rs.getString("venue")
+                );
+            }
+
+            rs.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
