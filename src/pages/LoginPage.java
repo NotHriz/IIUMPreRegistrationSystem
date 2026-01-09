@@ -14,6 +14,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+
+import javafx.*;
 import pages.PreRegistrationPage;
 
 import services.AuthService;
@@ -73,29 +75,35 @@ public class LoginPage extends Application {
         ));
         grid.add(loginButton, 1, 4);
 
-         loginButton.setOnAction(e -> {
-
+        loginButton.setOnAction(e -> {
             String matric = matricField.getText().trim();
             String password = passwordField.getText().trim();
 
-            // Initialize AuthService
             AuthService authService = new AuthService();
 
             if (authService.authenticate(matric, password)) {
-
-                // SUCCESS → OPEN PRE-REGISTRATION PAGE
                 try {
+                    // 1. Get current stage
                     Stage stage = (Stage) loginButton.getScene().getWindow();
+                    
+                    // 2. Data Hand-off
                     StudentDAO studentDAO = new StudentDAO();
-                    int studentId = studentDAO.getStudentIdByMatric(matric); // Get student ID from matric number
-                    PreRegistrationPage.studentId = studentId; // Give student ID to PreRegistrationPage
+                    int studentId = studentDAO.getStudentIdByMatric(matric);
+                    PreRegistrationPage.studentId = studentId;
+
+                    // 3. SEAMLESS SWITCH
+                    // We call start on the EXISTING stage
                     new PreRegistrationPage().start(stage);
+                    
+                    // 4. RE-FORCE FULLSCREEN
+                    // JavaFX can drop fullscreen when a new Scene is attached to the Stage
+                    stage.setFullScreen(true);
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-
             } else {
-                // ERROR ALERT
+                // ERROR ALERT (Fullscreen might exit when alert pops up, this is normal JavaFX behavior)
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Login Failed");
                 alert.setHeaderText("Invalid Credentials");
@@ -154,6 +162,8 @@ public class LoginPage extends Application {
 
         // ===================== SCENE & STAGE =====================
         Scene scene = new Scene(root, 400, 300);
+        primaryStage.setMaximized(true); 
+        primaryStage.setFullScreen(true); 
         primaryStage.setScene(scene);
 
         // Apply correct size if started maximized

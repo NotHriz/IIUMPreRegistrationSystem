@@ -102,6 +102,9 @@ public class PreRegistrationPage extends Application {
             ".popup-table .column-header-background { -fx-background-color: #f8f9fa; }");
 
         primaryStage.setTitle("University Pre-Registration System");
+        primaryStage.setMaximized(true); 
+        primaryStage.setFullScreen(true); 
+        primaryStage.setFullScreenExitHint("");
         primaryStage.setMinWidth(1000);
         primaryStage.setMinHeight(700);
         primaryStage.setScene(scene);
