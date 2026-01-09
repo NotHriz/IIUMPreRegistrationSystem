@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import pages.PreRegistrationPage;
 
 import services.AuthService;
+import services.*;
 
 public class LoginPage extends Application {
 
@@ -79,6 +80,9 @@ public class LoginPage extends Application {
 
             AuthService authService = new AuthService();
 
+
+            // Initialize AuthService
+            AuthService authService = new AuthService();
 
             if (authService.authenticate(matric, password)) {
 

@@ -10,9 +10,14 @@ import pages.PreRegistrationPage;
 
 import java.util.List;
 
+import utils.*;
+
 public class Main {
 
     public static void main(String[] args) {
+
+        // Start DB connection
+        DBConnection.getConnection();
 
         LoginPage loginPage = new LoginPage();
         PreRegistrationPage preRegistrationPage = new PreRegistrationPage();
