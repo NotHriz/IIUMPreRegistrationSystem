@@ -10,9 +10,8 @@ import java.util.List;
 public class PreRegistrationDAO {
 
     // Add a new preregistration
-    public boolean addPreRegistration(int studentId, String courseCode, int sectionId, int semester, int year) {
-        String sql = "INSERT INTO preregistrations(student_id, course_code, section_id, semester, year) " +
-                     "VALUES (?, ?, ?, ?, ?)";
+    public boolean addPreRegistration(int studentId, String courseCode, int sectionId) {
+        String sql = "INSERT INTO preregistrations(student_id, course_code, section_id, status) VALUES (?, ?, ?, 'Registered')";
 
         try {
             Connection conn = DBConnection.getConnection();
@@ -20,17 +19,14 @@ public class PreRegistrationDAO {
             ps.setInt(1, studentId);
             ps.setString(2, courseCode);
             ps.setInt(3, sectionId);
-            ps.setInt(4, semester);
-            ps.setInt(5, year);
 
             int rows = ps.executeUpdate();
             ps.close();
             return rows > 0;
 
         } catch (SQLException e) {
-            // Handles duplicate entry due to UNIQUE constraint
             if (e.getErrorCode() == 1062) {
-                System.out.println("Student already preregistered for this course in this semester/year.");
+                System.out.println("Student already preregistered for this course.");
             } else {
                 e.printStackTrace();
             }
@@ -38,19 +34,16 @@ public class PreRegistrationDAO {
         return false;
     }
 
-    // Remove preregistration (admin privilege)
-    public boolean removePreRegistration(int studentId, String courseCode, int sectionId, int semester, int year) {
-        String sql = "DELETE FROM preregistrations " +
-                     "WHERE student_id = ? AND course_code = ? AND section_id = ? AND semester = ? AND year = ?";
+    // Remove preregistration
+    public boolean removePreRegistration(int studentId, String courseCode) {
+        // Updated SQL to match new schema (removed semester/year)
+        String sql = "DELETE FROM preregistrations WHERE student_id = ? AND course_code = ?";
 
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, studentId);
             ps.setString(2, courseCode);
-            ps.setInt(3, sectionId);
-            ps.setInt(4, semester);
-            ps.setInt(5, year);
 
             int rows = ps.executeUpdate();
             ps.close();
@@ -79,8 +72,6 @@ public class PreRegistrationDAO {
                         rs.getInt("student_id"),
                         rs.getString("course_code"),
                         rs.getInt("section_id"),
-                        rs.getInt("semester"),
-                        rs.getInt("year"),
                         rs.getString("status"),
                         rs.getTimestamp("prereg_date")
                 ));
@@ -97,50 +88,39 @@ public class PreRegistrationDAO {
     }
 
     // Get preregistrations for current semester/year
-    public List<PreRegistration> getCurrentPreRegistrations(int studentId, int semester, int year) {
+    public List<PreRegistration> getCurrentPreRegistrations(int studentId) {
         List<PreRegistration> list = new ArrayList<>();
-        String sql = "SELECT * FROM preregistrations WHERE student_id = ? AND semester = ? AND year = ?";
+        String sql = "SELECT * FROM preregistrations WHERE student_id = ? AND status = 'Registered'";
 
-        try {
-            Connection conn = DBConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        // The connection 'conn' is created here and will be closed automatically at the end of the }
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = (conn != null) ? conn.prepareStatement(sql) : null) {
+            
+            if (ps == null) return list;
+
             ps.setInt(1, studentId);
-            ps.setInt(2, semester);
-            ps.setInt(3, year);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(new PreRegistration(
-                        rs.getInt("prereg_id"),
-                        rs.getInt("student_id"),
-                        rs.getString("course_code"),
-                        rs.getInt("section_id"),
-                        rs.getInt("semester"),
-                        rs.getInt("year"),
-                        rs.getString("status"),
-                        rs.getTimestamp("prereg_date")
-                ));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new PreRegistration(
+                            rs.getInt("prereg_id"),
+                            rs.getInt("student_id"),
+                            rs.getString("course_code"),
+                            rs.getInt("section_id"),
+                            rs.getString("status"),
+                            rs.getTimestamp("prereg_date")
+                    ));
+                }
             }
-
-            rs.close();
-            ps.close();
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Caught here! Your UI/Main code remains unchanged.
         }
-
         return list;
     }
 
     // Get completed course codes for a student
     public List<String> getCompletedCourseCodes(int studentId) {
         List<String> completed = new ArrayList<>();
-        String sql = """
-            SELECT course_code
-            FROM preregistrations
-            WHERE student_id = ?
-            AND status = 'Completed'
-        """;
+        String sql = "SELECT course_code FROM preregistrations WHERE student_id = ? AND status = 'Completed'";
 
         try {
             Connection conn = DBConnection.getConnection();
@@ -163,22 +143,14 @@ public class PreRegistrationDAO {
     }
 
     // Prevent duplicate preregistration
-    public boolean isAlreadyRegistered(int studentId, String courseCode, int semester, int year) {
-        String sql = """
-            SELECT 1 FROM preregistrations
-            WHERE student_id = ?
-            AND course_code = ?
-            AND semester = ?
-            AND year = ?
-        """;
+    public boolean isAlreadyRegistered(int studentId, String courseCode) {
+        String sql = "SELECT 1 FROM preregistrations WHERE student_id = ? AND course_code = ?";
 
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, studentId);
             ps.setString(2, courseCode);
-            ps.setInt(3, semester);
-            ps.setInt(4, year);
 
             ResultSet rs = ps.executeQuery();
             boolean exists = rs.next();
@@ -194,32 +166,27 @@ public class PreRegistrationDAO {
         return false;
     }
 
-    // Credit hour calulation (max 20, registered only)
-    public int getTotalRegisteredCredits(int studentId, int semester, int year) {
-        String sql = """
-            SELECT SUM(c.credit_hour) AS total
-            FROM preregistrations p
-            JOIN courses c ON p.course_code = c.course_code
-            WHERE p.student_id = ?
-            AND p.semester = ?
-            AND p.year = ?
-            AND p.status = 'Registered'
-        """;
+    // Credit hour calculation
+    public int getTotalRegisteredCredits(int studentId) {
+        String sql = "SELECT SUM(c.credit_hour) AS total " +
+                     "FROM preregistrations p " +
+                     "JOIN courses c ON p.course_code = c.course_code " +
+                     "WHERE p.student_id = ? AND p.status = 'Registered'";
 
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, studentId);
-            ps.setInt(2, semester);
-            ps.setInt(3, year);
 
             ResultSet rs = ps.executeQuery();
+            int total = 0;
             if (rs.next()) {
-                return rs.getInt("total");
+                total = rs.getInt("total");
             }
 
             rs.close();
             ps.close();
+            return total;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -227,7 +194,4 @@ public class PreRegistrationDAO {
 
         return 0;
     }
-
-
-
 }

@@ -22,7 +22,8 @@ public class CourseDAO {
                         rs.getString("course_code"),
                         rs.getString("course_name"),
                         rs.getInt("credit_hour"),
-                        rs.getString("prerequisite_course_code")
+                        rs.getString("prerequisite_course_code"),
+                        rs.getString("cat")
                 );
             }
 
@@ -45,7 +46,8 @@ public class CourseDAO {
                         rs.getString("course_code"),
                         rs.getString("course_name"),
                         rs.getInt("credit_hour"),
-                        rs.getString("prerequisite_course_code")
+                        rs.getString("prerequisite_course_code"),
+                        rs.getString("cat")
                 ));
             }
 
@@ -55,5 +57,4 @@ public class CourseDAO {
         return list;
     }
 
-    // TODO: implement getPrerequisites(String code) and getSections(String code)
 }
