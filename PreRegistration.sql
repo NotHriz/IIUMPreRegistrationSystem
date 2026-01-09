@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `preregistration` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `preregistration`;
 -- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: preregistration
@@ -46,42 +44,6 @@ INSERT INTO `courses` VALUES ('BICS2301','Enterprise Networks',3,NULL),('BICS230
 UNLOCK TABLES;
 
 --
--- Table structure for table `preregistrations`
---
-
-DROP TABLE IF EXISTS `preregistrations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `preregistrations` (
-  `prereg_id` int NOT NULL AUTO_INCREMENT,
-  `student_id` int NOT NULL,
-  `course_code` varchar(10) NOT NULL,
-  `section_id` int NOT NULL,
-  `semester` int NOT NULL,
-  `year` int NOT NULL,
-  `status` enum('Completed','Ongoing','Registered') DEFAULT 'Registered',
-  `prereg_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`prereg_id`),
-  UNIQUE KEY `student_id` (`student_id`,`course_code`,`semester`,`year`),
-  KEY `course_code` (`course_code`),
-  KEY `section_id` (`section_id`),
-  CONSTRAINT `preregistrations_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE CASCADE,
-  CONSTRAINT `preregistrations_ibfk_2` FOREIGN KEY (`course_code`) REFERENCES `courses` (`course_code`) ON DELETE CASCADE,
-  CONSTRAINT `preregistrations_ibfk_3` FOREIGN KEY (`section_id`) REFERENCES `sections` (`section_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `preregistrations`
---
-
-LOCK TABLES `preregistrations` WRITE;
-/*!40000 ALTER TABLE `preregistrations` DISABLE KEYS */;
-INSERT INTO `preregistrations` VALUES (1,1,'BICS2301',1,1,2025,'Completed','2026-01-08 14:38:48'),(2,1,'BICS2302',2,2,2026,'Ongoing','2026-01-08 14:38:48'),(3,2,'BICS2301',1,1,2025,'Completed','2026-01-08 14:38:48'),(4,3,'BICS2303',3,2,2026,'Ongoing','2026-01-08 14:38:48'),(5,4,'BICS2306',4,2,2026,'Ongoing','2026-01-08 14:38:48');
-/*!40000 ALTER TABLE `preregistrations` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `sections`
 --
 
@@ -93,6 +55,7 @@ CREATE TABLE `sections` (
   `course_code` varchar(10) NOT NULL,
   `section_code` varchar(10) NOT NULL,
   `lecturer_name` varchar(100) NOT NULL,
+  `curr_capacity` int DEFAULT NULL,
   `schedule` varchar(50) DEFAULT NULL,
   `venue` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`section_id`),
@@ -107,7 +70,6 @@ CREATE TABLE `sections` (
 
 LOCK TABLES `sections` WRITE;
 /*!40000 ALTER TABLE `sections` DISABLE KEYS */;
-INSERT INTO `sections` VALUES (1,'BICS2301','7','Adamu Abubakar Ibrahim','T-TH 1400-1520','ICT CISCO LAB LEVEL 4C'),(2,'BICS2302','2','Aizal Yusrina Idris','M-W 1530-1650','ICT LR 19 LEVEL 4C'),(3,'BICS2303','4','Dini Oktarina Dwi Handayani','M-W 0830-0950','ICT TL-E5-01 LEVEL 5E'),(4,'BICS2306','4','Normi Sham Bt. Awang Abu Bakar','M-W 1000-1120','ICT TL-D5-04 LEVEL 5D'),(5,'BIIT2301','3','Rafidah Binti Isa','M-W 1130-1250','ICT LR 11 LEVEL 2C'),(6,'CCLM2020','26','Rs Azira Binti Sulaiman','TUE 1700-1900','KENMS 3.10 LEVEL 3'),(7,'SCSH1201','4','Salman Ahmed Shaikh','FRI 900-1100','ENG LT2 E0-1'),(8,'UNGS2290','22','Abdulwahed Jalal Nori','TUE 1000-1150','IRK LR 14 RK LVL 1');
 /*!40000 ALTER TABLE `sections` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,4 +115,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-08 23:53:18
+-- Dump completed on 2026-01-09 19:39:05
